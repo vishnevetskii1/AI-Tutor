@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Репетитор — Руководство пользователя</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* Header */
+    .header {
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .pulse-dot {
+      width: 10px; height: 10px;
+      background: #22d3ee;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    h1 { font-size: 1.6rem; font-weight: 700; }
+    .subtitle { color: #64748b; font-size: 0.8rem; margin-left: 1.5rem; }
+
+    /* TOC */
+    .toc {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid #1e293b;
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .toc ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3rem 1.5rem;
+    }
+    .toc li { font-size: 0.8rem; }
+    .toc a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .toc a:hover { color: #22d3ee; }
+    .toc .num { color: #475569; margin-right: 0.4rem; }
+
+    /* Sections */
+    .section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 1.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #475569;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 2px 7px;
+      flex-shrink: 0;
+    }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Cards grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid #1e293b;
+      border-radius: 0.75rem;
+      padding: 1.1rem;
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-cyan { background: #22d3ee; }
+    .dot-emerald { background: #34d399; }
+    .dot-violet { background: #a78bfa; }
+    .dot-amber { background: #fbbf24; }
+    .dot-rose { background: #fb7185; }
+    .card p { margin: 0; font-size: 0.75rem; color: #64748b; }
+
+    /* Step list */
+    .steps { list-style: none; margin-top: 0.5rem; }
+    .steps li {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #0f172a;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    .steps li:last-child { border-bottom: none; }
+    .step-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #020617;
+      background: #22d3ee;
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .steps strong { color: #e2e8f0; }
+
+    /* Command blocks */
+    .cmd-list { margin-top: 0.5rem; }
+    .cmd-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.4rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid #1e293b;
+      font-size: 0.8rem;
+    }
+    .cmd {
+      font-weight: 700;
+      color: #22d3ee;
+      white-space: nowrap;
+      min-width: 140px;
+    }
+    .cmd-desc { color: #64748b; flex: 1; }
+
+    /* Mode flow */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .flow-step {
+      background: rgba(6, 78, 59, 0.3);
+      border: 1px solid #34d399;
+      border-radius: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.75rem;
+      color: #34d399;
+      font-weight: 600;
+    }
+    .flow-arrow { color: #475569; font-size: 0.85rem; }
+
+    /* Inline code */
+    code {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #334155;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 0.75rem;
+      color: #fbbf24;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Info block */
+    .info {
+      background: rgba(8, 51, 68, 0.3);
+      border: 1px solid #164e63;
+      border-radius: 0.5rem;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.78rem;
+      color: #7dd3fc;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .info strong { color: #38bdf8; }
+
+    .warn {
+      background: rgba(120, 53, 15, 0.2);
+      border: 1px solid #92400e;
+      border-radius: 0.5rem;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.78rem;
+      color: #fbbf24;
+      margin-top: 0.75rem;
+    }
+    .warn strong { color: #f59e0b; }
+
+    /* XP table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+    }
+    th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid #1e293b;
+    }
+    td {
+      padding: 0.55rem 0.75rem;
+      color: #94a3b8;
+      border-bottom: 1px solid #0f172a;
+    }
+    td:first-child { color: #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(15, 23, 42, 0.4); }
+
+    /* FAQ */
+    .faq-item {
+      border: 1px solid #1e293b;
+      border-radius: 0.6rem;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 0.85rem 1.1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .faq-q::before { content: "Q  "; color: #22d3ee; }
+    .faq-a {
+      padding: 0.85rem 1.1rem;
+      font-size: 0.78rem;
+      color: #64748b;
+      border-top: 1px solid #0f172a;
+    }
+    .faq-a::before { content: "A  "; color: #34d399; font-weight: 600; color: #34d399; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid #0f172a;
+      color: #334155;
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-row">
+      <div class="pulse-dot"></div>
+      <h1>AI-Репетитор — Руководство пользователя</h1>
+    </div>
+    <p class="subtitle">AI-репетитор в Telegram</p>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <ol>
+      <li><a href="#intro"><span class="num">01</span>Что умеет бот</a></li>
+      <li><a href="#start"><span class="num">02</span>Первый запуск</a></li>
+      <li><a href="#onboarding"><span class="num">03</span>Онбординг</a></li>
+      <li><a href="#learning"><span class="num">04</span>Процесс обучения</a></li>
+      <li><a href="#commands"><span class="num">05</span>Команды</a></li>
+      <li><a href="#quiz"><span class="num">06</span>Квиз и оценка</a></li>
+      <li><a href="#xp"><span class="num">07</span>XP и достижения</a></li>
+      <li><a href="#disciplines"><span class="num">08</span>Дисциплины</a></li>
+      <li><a href="#faq"><span class="num">09</span>FAQ</a></li>
+      <li><a href="#admin"><span class="num">10</span>Для администратора</a></li>
+    </ol>
+  </div>
+
+  <!-- 01 Что умеет бот -->
+  <div class="section" id="intro">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Что умеет бот</h2>
+    </div>
+    <p>AI-Репетитор — Telegram-бот для пошагового обучения. Он определяет уровень, строит персональный курс по загруженным PDF, объясняет темы, задаёт квизы и сохраняет прогресс по каждой дисциплине отдельно.</p>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-emerald"></span>Учебный план</div>
+        <p>Составляет персональный план по реальной структуре PDF-материалов. Количество тем не фиксировано: обычно от 5 до 20.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-cyan"></span>Учебные блоки</div>
+        <p>Объясняет каждую тему структурированно, а длинные блоки может разбивать на несколько учебных вопросов со степпером.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-amber"></span>Проверочный квиз</div>
+        <p>После каждого блока — 3 вопроса с выбором ответа. Нужно пройти порог 2 из 3, чтобы двигаться дальше.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-rose"></span>XP и ачивки</div>
+        <p>Зарабатывай опыт за правильные ответы и разблокируй достижения по мере прогресса.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-emerald"></span>Несколько курсов</div>
+        <p>Можно одновременно изучать несколько дисциплин и переключаться между ними.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 Первый запуск -->
+  <div class="section" id="start">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Первый запуск</h2>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <span>Найди бота в Telegram и нажми <strong>Start</strong> или отправь команду <code>/start</code>.</span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span>Бот поприветствует и покажет список доступных дисциплин в виде кнопок. Нажми на нужную.</span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span>Начнётся <strong>онбординг</strong> — 3 вопроса, чтобы определить твой уровень. Отвечай честно.</span>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <span>Бот построит персональный <strong>план по загруженным материалам</strong> и покажет его тебе. Число тем зависит от дисциплины.</span>
+      </li>
+      <li>
+        <span class="step-num">5</span>
+        <span>Нажми <strong>«Начать обучение»</strong> — и получишь первый учебный блок.</span>
+      </li>
+    </ol>
+    <div class="info">
+      <strong>Подсказка:</strong> если ты уже учился раньше и хочешь начать заново — используй команду <code>/reset</code>. Прогресс по текущей дисциплине будет сброшен.
+    </div>
+  </div>
+
+  <!-- 03 Онбординг -->
+  <div class="section" id="onboarding">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Онбординг — определение уровня</h2>
+    </div>
+    <p>Бот задаёт 3 вопроса. На основе ответов он определяет твой уровень и адаптирует все объяснения под него.</p>
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <span><strong>Самооценка:</strong> «Как бы ты оценил свои знания? (1 — новичок, 5 — продвинутый)» — напиши число от 1 до 5 или словами: <em>новичок / средний / продвинутый</em>.</span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span><strong>Прошлый опыт:</strong> «Изучал ли ты эту тему раньше?» — напиши кратко: <em>не изучал</em>, <em>в институте 2 года</em>, <em>самостоятельно</em>.</span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span><strong>Цель:</strong> «Какая у тебя цель?» — напиши: <em>экзамен</em>, <em>для работы</em>, <em>для себя</em>, <em>собеседование</em>.</span>
+      </li>
+    </ol>
+    <div class="cards-grid" style="margin-top:1rem">
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-cyan"></span>Новичок (1–2)</div>
+        <p>Объяснения с нуля, бытовые аналогии, медленный темп, каждый термин расшифровывается.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-amber"></span>Средний (3)</div>
+        <p>База известна, упор на понимание связей, переход от смысла к формуле.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-rose"></span>Продвинутый (4–5)</div>
+        <p>Плотный стиль, строгие формулировки, нюансы, сложные случаи и граничные условия.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 Процесс обучения -->
+  <div class="section" id="learning">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Процесс обучения</h2>
+    </div>
+    <p>Каждый цикл — один блок из плана. Сначала идёт объяснение, затем по желанию можно открыть чат по текущему блоку, после этого пройти квиз. Длинный блок бот может выдавать по частям через кнопку перехода к следующему учебному вопросу.</p>
+
+    <div class="flow">
+      <span class="flow-step">📋 Показ блока</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">➡️ Учебные вопросы</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">💬 Вопросы (опционально)</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">📝 Квиз</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">✅ Пройдено / 🔁 Повтор</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">➡️ Следующий блок</span>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <span><strong>Учебный блок</strong> — бот присылает развёрнутое объяснение темы с определениями, примерами и подзаголовками. Если блок длинный, он пойдёт несколькими шагами с кнопкой перехода к следующему учебному вопросу.</span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span><strong>Режим вопросов</strong> — после блока появляются кнопки. Нажми <strong>«💬 Спросить по блоку»</strong> и пиши вопрос только по текущей теме. Бот ответит как репетитор один на один.</span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span><strong>Квиз</strong> — нажми <strong>«Пройти квиз»</strong>. Три вопроса подряд, каждый с 4 вариантами. Отвечай кнопками A / B / C / D.</span>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <span>Если <strong>2 или 3 из 3 правильно</strong> — блок пройден, начисляется XP, открывается следующая тема. Если нет — бот объяснит блок заново.</span>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <strong>Важно:</strong> в режиме вопросов бот отвечает только по текущей теме. Если спросить о другом — мягко вернёт к теме. Это сделано специально, чтобы не уходить в сторону.
+    </div>
+    <div class="info">
+      <strong>Ещё один нюанс UX:</strong> свободный текст бот принимает в основном во время онбординга и в режиме чата по блоку. В остальных состояниях лучше использовать кнопки под сообщениями.
+    </div>
+  </div>
+
+  <!-- 05 Команды -->
+  <div class="section" id="commands">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Команды бота</h2>
+    </div>
+    <div class="cmd-list">
+      <div class="cmd-row">
+        <span class="cmd">/start</span>
+        <span class="cmd-desc">Начать или вернуться к выбору дисциплины. Если курс уже идёт — предложит продолжить или выбрать другой.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">/progress</span>
+        <span class="cmd-desc">Показать текущий прогресс: пройденные темы, XP, уровень и текущая дисциплина.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">/plan</span>
+        <span class="cmd-desc">Показать полный учебный план с темами и подтемами. Пройденные блоки отмечены.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">/course</span>
+        <span class="cmd-desc">Открыть список всех курсов: начатые, активные и доступные для старта. Отсюда же можно переключаться между дисциплинами.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">/skip</span>
+        <span class="cmd-desc">Пропустить текущий блок и перейти дальше по плану. Полезно, если тема уже знакома.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">/reset</span>
+        <span class="cmd-desc">Сбросить прогресс по текущей дисциплине и начать заново с онбординга.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">/help</span>
+        <span class="cmd-desc">Показать краткую справку по командам.</span>
+      </div>
+    </div>
+    <div class="info">
+      <strong>Подсказка:</strong> кнопки в чате удобнее команд. Используй команды когда нужно быстро переключиться или проверить прогресс.
+    </div>
+  </div>
+
+  <!-- 06 Квиз -->
+  <div class="section" id="quiz">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Квиз и система оценки</h2>
+    </div>
+    <p>Квиз — 3 вопроса с множественным выбором, сгенерированные специально по содержанию твоего учебного блока. Вопросы меняются каждый раз при повторном прохождении.</p>
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <span>Нажми кнопку <strong>«Пройти квиз»</strong> под учебным блоком.</span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span>Бот задаёт вопросы по одному. Под каждым — кнопки <strong>A, B, C, D</strong>. Нажимай ответ.</span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span>После трёх вопросов бот показывает результат: сколько правильных и сколько XP заработано.</span>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <span>Порог прохождения — <strong>2 из 3</strong> (≥67%). При провале бот объяснит блок заново, потом новый квиз.</span>
+      </li>
+    </ol>
+    <div class="cards-grid" style="margin-top:0.75rem">
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-emerald"></span>Прошёл (≥ 2/3)</div>
+        <p>Блок помечается как пройденный. Начисляется XP. Открывается следующая тема.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-rose"></span>Не прошёл (&lt; 2/3)</div>
+        <p>Бот показывает блок заново с другим акцентом. Генерирует новые вопросы квиза.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 XP и достижения -->
+  <div class="section" id="xp">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>XP и достижения</h2>
+    </div>
+    <p>За каждый правильный ответ в квизе начисляется опыт (XP). Посмотреть баланс — <code>/progress</code>.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Результат квиза</th>
+          <th>XP за попытку</th>
+          <th>Примечание</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>3 из 3 (идеально)</td>
+          <td>+30 XP</td>
+          <td>Даёт ачивку «Идеальный результат»</td>
+        </tr>
+        <tr>
+          <td>2 из 3</td>
+          <td>+20 XP</td>
+          <td>Блок засчитывается как пройденный</td>
+        </tr>
+        <tr>
+          <td>1 из 3</td>
+          <td>+10 XP</td>
+          <td>Блок повторяется</td>
+        </tr>
+        <tr>
+          <td>0 из 3</td>
+          <td>+0 XP</td>
+          <td>Блок повторяется</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:1rem">Достижения разблокируются автоматически при выполнении условий — бот сообщает о них сразу после квиза.</p>
+  </div>
+
+  <!-- 08 Дисциплины -->
+  <div class="section" id="disciplines">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Дисциплины и курсы</h2>
+    </div>
+    <p>Доступные дисциплины зависят от того, какие материалы загрузил администратор. Список показывается при <code>/start</code>.</p>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-amber"></span>Переключение курсов</div>
+        <p>Команда <code>/course</code> или кнопка <code>📚 Все курсы</code> покажет все курсы. Кнопка <code>📋 Мой план</code> возвращает к плану активной дисциплины.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="card-dot dot-violet"></span>Независимые прогрессы</div>
+        <p>У каждой дисциплины свой план, XP и прогресс. Переключение не сбрасывает другие курсы.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 FAQ -->
+  <div class="section" id="faq">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2>Частые вопросы</h2>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Бот долго не отвечает — что делать?</div>
+      <div class="faq-a">Генерация учебного блока занимает 10–30 секунд. Если ответа нет больше 2 минут — напиши любое сообщение или нажми кнопку ещё раз.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Можно ли пропустить тему и перейти к следующей?</div>
+      <div class="faq-a">Да. Для этого есть команда <code>/skip</code>. Она пропускает текущий блок и переводит на следующий. Используй её аккуратно: темы в курсе связаны между собой.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Объяснение непонятное — можно попросить объяснить иначе?</div>
+      <div class="faq-a">Да. Нажми <code>💬 Спросить по блоку</code> и напиши, что именно непонятно. Бот ответит в режиме репетитора. Если квиз не пройден, при повторе блок тоже будет объяснён с другим акцентом.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Как начать заново не теряя другие курсы?</div>
+      <div class="faq-a">Команда <code>/reset</code> сбрасывает только активный курс. Другие дисциплины не затрагиваются.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Почему бот не отвечает на вопросы не по теме?</div>
+      <div class="faq-a">QA-режим специально ограничен текущей темой и подтемами блока. Это помогает оставаться в фокусе. Для другой дисциплины или другого блока открой <code>/course</code> или кнопку <code>📚 Все курсы</code> и переключись.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Сохраняется ли прогресс если закрыть Telegram?</div>
+      <div class="faq-a">Да. Весь прогресс сохраняется в базе данных на сервере автоматически после каждого шага. Можно продолжить в любое время.</div>
+    </div>
+  </div>
+
+  <!-- 10 Для администратора -->
+  <div class="section" id="admin">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2>Для администратора</h2>
+    </div>
+    <p>Базовые операции администратора доступны через Telegram. Расширенные — через консоль сервера.</p>
+    <div class="cmd-list">
+      <div class="cmd-row">
+        <span class="cmd">/admin</span>
+        <span class="cmd-desc">Открыть панель администратора (только для пользователей из списка admin_user_ids).</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">Режим обслуживания</span>
+        <span class="cmd-desc">Включить через панель /admin. Пользователи видят сообщение «Бот на техническом обслуживании».</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">Статистика</span>
+        <span class="cmd-desc">Список пользователей, их прогресс по курсам, XP и текущие состояния — в панели /admin.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">Документация</span>
+        <span class="cmd-desc">Из панели /admin можно отправить в чат актуальные HTML-файлы: архитектуру, историю разработки и руководство пользователя.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd">Доступ</span>
+        <span class="cmd-desc">Администратор может включать техработы и отдельно отключать конкретных пользователей через admin-панель.</span>
+      </div>
+    </div>
+    <div class="info">
+      <strong>Запуск бота:</strong> <code>docker compose up -d</code> — поднимает бот + Qdrant. Логи: <code>docker compose logs -f bot</code>. Переменные окружения в <code>.env</code> (TELEGRAM_BOT_TOKEN, OPENROUTER_API_KEY, LLM_PROVIDER).
+    </div>
+  </div>
+
+  <p class="footer">AI-Репетитор · 2026 · LangGraph + RAG · Python</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# Секреты
+.env
+
+# Виртуальное окружение
+.venv/
+venv/
+env/
+
+# Python кэш
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# macOS
+.DS_Store
+.AppleDouble
+**/.DS_Store
+
+# IDE / Claude
+.idea/
+.vscode/
+.claude/
+*.swp
+*.swo
+
+# База данных (создаётся при запуске)
+*.db
+*.sqlite
+*.sqlite3
+
+# PDF учебники (авторское право — не загружаем в репо)
+*.pdf
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
